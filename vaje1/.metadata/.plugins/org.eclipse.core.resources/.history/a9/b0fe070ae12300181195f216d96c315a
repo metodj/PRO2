@@ -1,0 +1,13 @@
+package polinomi;
+
+//vnasam polinome takole: "3,1,1,2"
+//vnasam red odvoda = "n"
+public class Polinomi {
+
+	public static void main(String[] args) {
+		String[] koef = args[0].split(",");
+		int red =  Integer.parseInt(args[1]);
+		System.out.println(koef);
+	}
+
+}
