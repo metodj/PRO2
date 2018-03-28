@@ -117,7 +117,7 @@ public class Graf {
 		//lahko bi uporabu lepso for zanko, da iteriram direktno po slovarju
 		for (Tocka a : slovar_tock.values()) {  
 			a.x = x + Math.cos(counter*2*Math.PI/st_tock)*r;
-			a.y = x + Math.sin(counter*2*Math.PI/st_tock)*r;
+			a.y = y + Math.sin(counter*2*Math.PI/st_tock)*r;
 			counter++;
 		}
 		
