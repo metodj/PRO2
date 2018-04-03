@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,6 +43,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addKeyListener(this);
+		this.setFocusable(true); //fokus
 	}
 	
 	public void narisi(Graf g) {
@@ -82,7 +84,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		return (int)(x + 0.5);
 	}
 	
-	//dodamo aktivno tocko v mnozico
+	
 	
 
 	@Override
@@ -116,11 +118,17 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (aktivna == null) {
-			Tocka nova = new Tocka("nova"); //slab nacin za poimenovanje
+		if ((aktivna == null) && (x_klika == e.getX()) && (y_klika == e.getY()) ) {
+			//Tocka nova = new Tocka("nova"); //slab nacin za poimenovanje
+			String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+			Tocka nova = new Tocka(timeStamp);
 			nova.x = e.getX();
 			nova.y = e.getY();
 			graf.slovar_tock.put(nova.ime, nova);
+			for (Tocka t : graf.slovar_tock.values()) {
+				graf.dodajPovezavo(nova, t);
+			}
+			repaint();
 		} else if ((x_klika == e.getX()) && (y_klika == e.getY()) ) {
 			oznacene.add(aktivna);
 			aktivna = null;
@@ -137,6 +145,10 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 			aktivna.x = e.getX();
 			aktivna.y = e.getY();
 			repaint();
+		} else {
+			for (Tocka t : oznacene) {
+				//TODO premikanje vseh oznacenih tock
+			}
 		}
 		
 	}
@@ -147,8 +159,16 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	}
 
 	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	public void keyPressed(KeyEvent e) {
+		//TODO zaenkrat ne dela
+		if (e.getKeyChar() == '\b') {
+			for (Tocka t: graf.slovar_tock.values()) {
+				if (oznacene.contains(t)) {
+					graf.odstraniTocko(t);
+				}
+			}
+			repaint();
+		}
 		
 	}
 
